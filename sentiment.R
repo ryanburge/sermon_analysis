@@ -20,8 +20,29 @@ fem <- tidy %>%
 
 ## Some interesting stuff here. 
 
-bind_cols(men, fem) %>% 
+compare <- bind_cols(men, fem) %>% 
   select(-sentiment1) %>% 
-  rename(men = n, women = n1) %>% 
-  mutate(diff = women/men)
+  rename(men = n, women = n1) 
 
+compare <- melt(compare, id.vars = c("sentiment"))
+
+simpleCap <- function(x) {
+  s <- strsplit(x, " ")[[1]]
+  paste(toupper(substring(s, 1,1)), substring(s, 2),
+        sep="", collapse=" ")
+}
+
+compare$sentiment <- sapply(compare$sentiment, simpleCap)
+compare$variable <- as.character(compare$variable)
+compare$variable <- sapply(compare$variable, simpleCap)
+
+
+ggplot(compare, aes(x=sentiment, y= value, group = variable,  fill = variable)) + 
+  geom_col(position = "dodge") + 
+  labs(x ="Sentiment", y = "Number of Words", title = "Comparing Sentiment in Sermons Based on Gender")  + 
+  theme(legend.position="bottom") + labs(fill="") +
+  theme(plot.title = element_text(hjust = 0.5))  + 
+  theme(text=element_text(size=28)) + 
+  scale_fill_grey()
+
+ggsave(file="sentiment_nrc.png", type = "cairo-png", width = 20, height =12)
