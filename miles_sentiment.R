@@ -33,6 +33,7 @@ x <- c(1:length(cronology))
 sermons$cronology <- data.frame(cronology,x) %>% 
   filter(cronology!="FALSE") %>% select(cronology)
 sermons <- sermons %>% mutate(score=syuzhet::get_sentiment(word))
+
 sermons$cronology <- sermons$cronology$cronology
 library(Rmisc)
 dat <- summarySE(sermons, measurevar="score", groupvars=c("cronology","gender"))
