@@ -39,6 +39,7 @@ library(Rmisc)
 dat <- summarySE(sermons, measurevar="score", groupvars=c("cronology","gender"))
 
 windows()
+
 library(ggplot2)
 ggplot(dat,aes(x=cronology, y=score,color=gender, group=gender)) + 
   geom_errorbar(aes(ymin=score-ci,ymax=score+ci),color="black",width=.1, position=position_dodge(0.1)) +
@@ -52,3 +53,5 @@ ggplot(dat,aes(x=cronology, y=score,color=gender, group=gender)) +
   geom_vline(xintercept = c(1.5,2.5,3.5,4.5)) +
   theme(legend.position = c(0.1,0.9)) +
   theme(legend.title = element_blank())
+
+ggsave(file="sentiment_by5.png", type = "cairo-png", width = 15, height = 12)

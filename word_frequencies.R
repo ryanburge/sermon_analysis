@@ -29,6 +29,19 @@ tidy %>%
 ## Average Female Sermon was was 1767 words 
 
 
+
+g1 <- tibble(type = c("Male", "Female")) 
+g1 <- g1 %>% add_column(count = c(2516,1767))
+
+ggplot(g1, aes(x=reorder(type, -count), y=count)) + 
+  geom_col(fill = "gray0") + 
+  labs(x="Gender of Speaker", y= "Average Number of Words", title = "Which Gender Preachers Longer Sermons?") +
+  theme(plot.title = element_text(hjust=0.5,face="bold",size=16))
+
+ggsave(file="word_count_by_gender.png", type = "cairo-png", width = 10, height =12)
+
+
+
 tidy <- tidy %>%
   anti_join(stop_words)
 
